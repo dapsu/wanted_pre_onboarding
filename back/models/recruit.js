@@ -5,7 +5,8 @@ module.exports = class Recruit extends Sequelize.Model {
         return super.init({
             companyName: {
                 type: Sequelize.STRING(15),
-                allowNull: false
+                allowNull: false,
+                unique: true
             },
             country: {
                 type: Sequelize.STRING(30)
