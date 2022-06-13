@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
+const api = require('./routes/index');
 
 // 미들웨어
 if (process.env.NODE_ENV !== 'test') {
@@ -8,9 +9,6 @@ if (process.env.NODE_ENV !== 'test') {
 }
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-
-app.get('/', (req, res) => {
-    res.send('nodebird 백엔드 정상 동작!').status(200).end();
-});
+app.use('/', api);
 
 module.exports = app;
