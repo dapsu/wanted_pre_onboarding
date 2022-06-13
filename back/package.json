@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test mocha routes/recruit.spec.js",
+    "test": "cross-env NODE_ENV=test mocha routes/recruit/recruit.spec.js",
     "start": "node bin/www.js --watch"
   },
   "keywords": [],
