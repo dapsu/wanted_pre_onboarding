@@ -5,28 +5,30 @@ const models = require('../../models');
 
 // 채용공고 목록 가져오기 테스트 코드
 describe('GET /recruits ', () => {
-    const company = [{'companyName': '라인',
-                    'recruitPosition': '경력 백엔드',
-                    'country': '한국',
-                    'location': '판교',
-                    'signingBonus': 500000,
-                    'recruitDescribe': '라인은 ....',
-                    'skillStack': 'JAVA',
-                    },
-                    {'companyName': '당근마켓',
-                    'recruitPosition': '인턴 백엔드',
-                    'country': '한국',
-                    'location': '서울',
-                    'signingBonus': 5000000,
-                    'recruitDescribe': '당근마켓 검색팀에서 인턴을 모집합니다 ...',
-                    'skillStack': 'Node.js',
-                    }
-                ];
-    before(() => models.sequelize.sync({force:true}));  // 테스트 시 force 옵션을 true로 해서 테스트할 때마다 DB를 초기화한다.
+    const company = [{
+        'companyName': '라인',
+        'recruitPosition': '경력 백엔드',
+        'country': '한국',
+        'location': '판교',
+        'signingBonus': 500000,
+        'recruitDescribe': '라인은 ....',
+        'skillStack': 'JAVA',
+    },
+    {
+        'companyName': '당근마켓',
+        'recruitPosition': '인턴 백엔드',
+        'country': '한국',
+        'location': '서울',
+        'signingBonus': 5000000,
+        'recruitDescribe': '당근마켓 검색팀에서 인턴을 모집합니다 ...',
+        'skillStack': 'Node.js',
+    }
+    ];
+    before(() => models.sequelize.sync({ force: true }));  // 테스트 시 force 옵션을 true로 해서 테스트할 때마다 DB를 초기화한다.
     before(() => models.Recruit.bulkCreate(company));
 
     describe('성공 시', () => {
-        it('채용 공고 객체를 담은 배열로 응답한다', (done) => {  
+        it('채용 공고 객체를 담은 배열로 응답한다', (done) => {
             request(app)
                 .get('/recruits')
                 .end((err, res) => {
@@ -39,15 +41,16 @@ describe('GET /recruits ', () => {
 
 // 채용 상세 페이지 가져오기 테스트 코드
 describe('GET /recruits/:id', () => {
-    const company = {'companyName': '라인',
-                    'recruitPosition': '경력 백엔드',
-                    'country': '한국',
-                    'location': '판교',
-                    'signingBonus': 500000,
-                    'recruitDescribe': '라인은 ....',
-                    'skillStack': 'JAVA',
-                };
-    before(() => models.sequelize.sync({force:true}));
+    const company = {
+        'companyName': '라인',
+        'recruitPosition': '경력 백엔드',
+        'country': '한국',
+        'location': '판교',
+        'signingBonus': 500000,
+        'recruitDescribe': '라인은 ....',
+        'skillStack': 'JAVA',
+    };
+    before(() => models.sequelize.sync({ force: true }));
     before(() => models.Recruit.create(company));
 
     describe('성공 시', () => {
@@ -73,15 +76,16 @@ describe('GET /recruits/:id', () => {
 
 // 채용공고 등록하기 테스트 코드
 describe('POST /register', () => {
-    const company = {'companyName': '당근마켓',
-                    'recruitPosition': '인턴 백엔드',
-                    'country': '한국',
-                    'location': '서울',
-                    'signingBonus': 5000000,
-                    'recruitDescribe': '당근마켓 검색팀에서 인턴을 모집합니다 ...',
-                    'skillStack': 'Node.js'
-                };
-    before(() => models.sequelize.sync({force:true}));
+    const company = {
+        'companyName': '당근마켓',
+        'recruitPosition': '인턴 백엔드',
+        'country': '한국',
+        'location': '서울',
+        'signingBonus': 5000000,
+        'recruitDescribe': '당근마켓 검색팀에서 인턴을 모집합니다 ...',
+        'skillStack': 'Node.js'
+    };
+    before(() => models.sequelize.sync({ force: true }));
 
     describe('성공 시', (done) => {
         let body;
@@ -118,15 +122,16 @@ describe('POST /register', () => {
 
 // 채용공고 수정하기 테스트 코드
 describe('PUT /recruits/:id', () => {
-    const company = {'companyName': '당근마켓',
-                    'recruitPosition': '인턴 백엔드',
-                    'country': '한국',
-                    'location': '서울',
-                    'signingBonus': 5000000,
-                    'recruitDescribe': '당근마켓 검색팀에서 인턴을 모집합니다 ...',
-                    'skillStack': 'Node.js'
-                };
-    before(() => models.sequelize.sync({force:true}));
+    const company = {
+        'companyName': '당근마켓',
+        'recruitPosition': '인턴 백엔드',
+        'country': '한국',
+        'location': '서울',
+        'signingBonus': 5000000,
+        'recruitDescribe': '당근마켓 검색팀에서 인턴을 모집합니다 ...',
+        'skillStack': 'Node.js'
+    };
+    before(() => models.sequelize.sync({ force: true }));
     before(() => models.Recruit.create(company));
 
     describe('성공 시', () => {
@@ -134,7 +139,7 @@ describe('PUT /recruits/:id', () => {
             const companyName = 'kakao';
             request(app)
                 .put('/recruits/1')
-                .send({companyName})
+                .send({ companyName })
                 .end((err, res) => {
                     res.body.should.have.property('companyName', companyName);
                     done();
@@ -145,7 +150,7 @@ describe('PUT /recruits/:id', () => {
             const recruitPosition = '경력 프론트엔드';
             request(app)
                 .put('/recruits/1')
-                .send({recruitPosition})
+                .send({ recruitPosition })
                 .end((err, res) => {
                     res.body.should.have.property('recruitPosition', recruitPosition);
                     done();
@@ -156,7 +161,7 @@ describe('PUT /recruits/:id', () => {
             const signingBonus = 100000;
             request(app)
                 .put('/recruits/1')
-                .send({signingBonus})
+                .send({ signingBonus })
                 .end((err, res) => {
                     res.body.should.have.property('signingBonus', signingBonus);
                     done();
@@ -167,7 +172,7 @@ describe('PUT /recruits/:id', () => {
             const recruitDescribe = 'kakao is ...';
             request(app)
                 .put('/recruits/1')
-                .send({recruitDescribe})
+                .send({ recruitDescribe })
                 .end((err, res) => {
                     res.body.should.have.property('recruitDescribe', recruitDescribe);
                     done();
@@ -178,7 +183,7 @@ describe('PUT /recruits/:id', () => {
             const skillStack = 'vue.js';
             request(app)
                 .put('/recruits/1')
-                .send({skillStack})
+                .send({ skillStack })
                 .end((err, res) => {
                     res.body.should.have.property('skillStack', skillStack);
                     done();
@@ -190,7 +195,7 @@ describe('PUT /recruits/:id', () => {
             const location = '판교'
             request(app)
                 .put('/recruits/1')
-                .send({country, location})
+                .send({ country, location })
                 .end((err, res) => {
                     res.body.should.have.property('country', country);
                     res.body.should.have.property('location', location);
@@ -202,15 +207,16 @@ describe('PUT /recruits/:id', () => {
 
 // 테스트코드 삭제하기 채용 공고
 describe('DELETE /recruits/:id', () => {
-    const company = {'companyName': '당근마켓',
-                    'recruitPosition': '인턴 백엔드',
-                    'country': '한국',
-                    'location': '서울',
-                    'signingBonus': 5000000,
-                    'recruitDescribe': '당근마켓 검색팀에서 인턴을 모집합니다 ...',
-                    'skillStack': 'Node.js'
-                };
-    before(() => models.sequelize.sync({force:true}));
+    const company = {
+        'companyName': '당근마켓',
+        'recruitPosition': '인턴 백엔드',
+        'country': '한국',
+        'location': '서울',
+        'signingBonus': 5000000,
+        'recruitDescribe': '당근마켓 검색팀에서 인턴을 모집합니다 ...',
+        'skillStack': 'Node.js'
+    };
+    before(() => models.sequelize.sync({ force: true }));
     before(() => models.Recruit.create(company));
 
     describe('성공 시', () => {
