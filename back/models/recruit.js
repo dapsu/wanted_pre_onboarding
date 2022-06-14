@@ -40,6 +40,7 @@ module.exports = class Recruit extends Sequelize.Model {
         });
     }
 
+    // 다른 테이블과 관계 형성할 때 사용할 메소드
     static associate(db) {
 
     }

@@ -3,6 +3,7 @@ const should = require('should');
 const app = require('../../index');
 const models = require('../../models');
 
+// 채용공고 목록 가져오기 테스트 코드
 describe('GET /recruits ', () => {
     const company = [{'companyName': '라인',
                     'recruitPosition': '경력 백엔드',
@@ -21,7 +22,7 @@ describe('GET /recruits ', () => {
                     'skillStack': 'Node.js',
                     }
                 ];
-    before(() => models.sequelize.sync({force:true}));
+    before(() => models.sequelize.sync({force:true}));  // 테스트 시 force 옵션을 true로 해서 테스트할 때마다 DB를 초기화한다.
     before(() => models.Recruit.bulkCreate(company));
 
     describe('성공 시', () => {
@@ -36,6 +37,7 @@ describe('GET /recruits ', () => {
     });
 });
 
+// 채용 상세 페이지 가져오기 테스트 코드
 describe('GET /recruits/:id', () => {
     const company = {'companyName': '라인',
                     'recruitPosition': '경력 백엔드',
@@ -69,6 +71,7 @@ describe('GET /recruits/:id', () => {
     });
 });
 
+// 채용공고 등록하기 테스트 코드
 describe('POST /register', () => {
     const company = {'companyName': '당근마켓',
                     'recruitPosition': '인턴 백엔드',
@@ -113,6 +116,7 @@ describe('POST /register', () => {
     });
 });
 
+// 채용공고 수정하기 테스트 코드
 describe('PUT /recruits/:id', () => {
     const company = {'companyName': '당근마켓',
                     'recruitPosition': '인턴 백엔드',
@@ -196,6 +200,7 @@ describe('PUT /recruits/:id', () => {
     });
 });
 
+// 테스트코드 삭제하기 채용 공고
 describe('DELETE /recruits/:id', () => {
     const company = {'companyName': '당근마켓',
                     'recruitPosition': '인턴 백엔드',
