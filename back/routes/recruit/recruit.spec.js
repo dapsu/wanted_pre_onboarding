@@ -70,11 +70,13 @@ describe('GET /recruits/:id', () => {
 });
 
 describe('POST /register', () => {
-    const company = {'companyName': '라인',
-                    'recruitPosition': '경력 백엔드',
-                    'signingBonus': 500000,
-                    'recruitDescribe': '라인은 ....',
-                    'skillStack': 'JAVA',
+    const company = {'companyName': '당근마켓',
+                    'recruitPosition': '인턴 백엔드',
+                    'country': '한국',
+                    'location': '서울',
+                    'signingBonus': 5000000,
+                    'recruitDescribe': '당근마켓 검색팀에서 인턴을 모집합니다 ...',
+                    'skillStack': 'Node.js'
                 };
     before(() => models.sequelize.sync({force:true}));
 
@@ -96,7 +98,7 @@ describe('POST /register', () => {
         });
 
         it('입력한 companyName을 반환한다', () => {
-            body.should.have.property('companyName', '라인');
+            body.should.have.property('companyName', '당근마켓');
         });
     });
 
@@ -108,23 +110,17 @@ describe('POST /register', () => {
                 .expect(400)
                 .end(done);
         });
-
-        it('companyName이 중복일 경우 409를 반환한다', (done) => {
-            request(app)
-                .post('/register')
-                .send(company)
-                .expect(409)
-                .end(done);
-        });
     });
 });
 
 describe('PUT /recruits/:id', () => {
-    const company = {'companyName': '카카오',
-                    'recruitPosition': '신입 프론트엔드',
+    const company = {'companyName': '당근마켓',
+                    'recruitPosition': '인턴 백엔드',
+                    'country': '한국',
+                    'location': '서울',
                     'signingBonus': 5000000,
-                    'recruitDescribe': '카카오는 ....',
-                    'skillStack': 'react',
+                    'recruitDescribe': '당근마켓 검색팀에서 인턴을 모집합니다 ...',
+                    'skillStack': 'Node.js'
                 };
     before(() => models.sequelize.sync({force:true}));
     before(() => models.Recruit.create(company));
@@ -201,11 +197,13 @@ describe('PUT /recruits/:id', () => {
 });
 
 describe('DELETE /recruits/:id', () => {
-    const company = {'companyName': '카카오',
-                    'recruitPosition': '신입 프론트엔드',
+    const company = {'companyName': '당근마켓',
+                    'recruitPosition': '인턴 백엔드',
+                    'country': '한국',
+                    'location': '서울',
                     'signingBonus': 5000000,
-                    'recruitDescribe': '카카오는 ....',
-                    'skillStack': 'react',
+                    'recruitDescribe': '당근마켓 검색팀에서 인턴을 모집합니다 ...',
+                    'skillStack': 'Node.js'
                 };
     before(() => models.sequelize.sync({force:true}));
     before(() => models.Recruit.create(company));

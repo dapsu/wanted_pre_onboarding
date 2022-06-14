@@ -36,9 +36,6 @@ const register = (req, res) => {
             res.status(201).json(recruit);
         })
         .catch(err => {
-            if (err.name === 'SequelizeUniqueConstraintError') {
-                return res.status(409).end();
-            }
             res.status(500).end();
         });
 };
