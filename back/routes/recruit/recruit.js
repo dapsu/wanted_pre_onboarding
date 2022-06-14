@@ -3,10 +3,24 @@ const models = require('../../models');
 const show = (req, res) => {
     models.Recruit
         .findAll({
-            attributes: ['id', 'companyName', 'country', 'location', 'recruitPosition', 'signingBonus']
+            attributes: ['id', 'companyName', 'country', 'location', 'recruitPosition', 'signingBonus', 'skillStack']
         })
         .then(recruits => {
             res.json(recruits);
+        });
+};
+
+const search = (req, res) => {
+    const id = parseInt(req.params.id, 10);
+
+    models.Recruit
+        .findOne({
+            where: {id},
+            attributes: ['id', 'companyName', 'country', 'location', 'recruitPosition', 'signingBonus', 'skillStack', 'recruitDescribe']
+        })
+        .then(recruit => {
+            if (!recruit) return res.status(404).end();
+            res.json(recruit);
         });
 };
 
@@ -75,4 +89,4 @@ const destroy = (req, res) => {
         });
 }
 
-module.exports = {show, register, update, destroy};
+module.exports = {show, search, register, update, destroy};
