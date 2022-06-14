@@ -10,12 +10,12 @@ const show = (req, res) => {
         });
 };
 
-const search = (req, res) => {
+const detail = (req, res) => {
     const id = parseInt(req.params.id, 10);
 
     models.Recruit
         .findOne({
-            where: {id},
+            where: { id },
             attributes: ['id', 'companyName', 'country', 'location', 'recruitPosition', 'signingBonus', 'skillStack', 'recruitDescribe']
         })
         .then(recruit => {
@@ -51,7 +51,7 @@ const update = (req, res) => {
     const country = body.country;
     const location = body.location;
 
-    models.Recruit.findOne({where: {id}})
+    models.Recruit.findOne({ where: { id } })
         .then(recruit => {
             if (!recruit) {
                 return res.status(404).end();
@@ -80,10 +80,10 @@ const update = (req, res) => {
 const destroy = (req, res) => {
     const id = parseInt(req.params.id, 10);
 
-    models.Recruit.destroy({where: {id}})
+    models.Recruit.destroy({ where: { id } })
         .then(() => {
             res.status(204).end();
         });
 }
 
-module.exports = {show, search, register, update, destroy};
+module.exports = { show, detail, register, update, destroy };
