@@ -1,3 +1,4 @@
+const sequelize = require('sequelize');
 const models = require('../../models');
 
 // 채용공고 목록 가져오기
@@ -93,4 +94,123 @@ const destroy = (req, res) => {
         });
 }
 
-module.exports = { show, detail, register, update, destroy };
+// 채용공고 검색 기능
+const search = async (req, res) => {
+    const keyword = req.query.keyword;
+    const result = [];
+    const isValid = (res) => {
+        for (const data of result) {
+            if (data.id === res.dataValues.id) return false;
+        }
+        return true;
+    };
+
+    // companyName 검색 결과
+    const searchCompanyName = await models.Recruit.findAll({
+        where: {
+            companyName: {
+                [sequelize.Op.like]: `%${keyword}%`
+            }
+        },
+        attributes: ['id', 'companyName', 'country', 'location', 'recruitPosition', 'signingBonus', 'skillStack']
+    });
+    // companyName 데이터 result값에 저장
+    if (searchCompanyName.length > 0) {
+        searchCompanyName.forEach(res => {
+            result.push(res.dataValues);
+        });
+    }
+    // country 검색 결과
+    const searchCountry = await models.Recruit.findAll({
+        where: {
+            country: {
+                [sequelize.Op.like]: `%${keyword}%`
+            }
+        },
+        attributes: ['id', 'companyName', 'country', 'location', 'recruitPosition', 'signingBonus', 'skillStack']
+    });
+    // country 데이터 result값에 저장
+    if (searchCountry.length > 0) {
+        searchCountry.forEach(res => {
+            if (isValid(res)) result.push(res.dataValues);
+        });
+    }
+
+    // location 검색 결과
+    const searchLocation = await models.Recruit.findAll({
+        where: {
+            location: {
+                [sequelize.Op.like]: `%${keyword}%`
+            }
+        },
+        attributes: ['id', 'companyName', 'country', 'location', 'recruitPosition', 'signingBonus', 'skillStack']
+    });
+    // location 데이터 result값에 저장
+    if (searchLocation.length > 0) {
+        searchLocation.forEach(res => {
+            if (isValid(res)) result.push(res.dataValues);
+        });
+    }
+
+    // recruitPosition 검색 결과
+    const searchrecruitPosition = await models.Recruit.findAll({
+        where: {
+            recruitPosition: {
+                [sequelize.Op.like]: `%${keyword}%`
+            }
+        },
+        attributes: ['id', 'companyName', 'country', 'location', 'recruitPosition', 'signingBonus', 'skillStack']
+    });
+    // recruitPosition 데이터 result값에 저장
+    if (searchrecruitPosition.length > 0) {
+        searchrecruitPosition.forEach(res => {
+            if (isValid(res)) result.push(res.dataValues);
+        });
+    }
+
+    // signingBonus 검색 결과
+    const searchsigningBonus = await models.Recruit.findAll({
+        where: {
+            signingBonus: {
+                [sequelize.Op.like]: `%${keyword}%`
+            }
+        },
+        attributes: ['id', 'companyName', 'country', 'location', 'recruitPosition', 'signingBonus', 'skillStack']
+    });
+    // signingBonus 데이터 result값에 저장
+    if (searchsigningBonus.length > 0) {
+        searchsigningBonus.forEach(res => {
+            if (isValid(res)) result.push(res.dataValues);
+        });
+    }
+
+    // skillStack 검색 결과
+    const searchskillStack = await models.Recruit.findAll({
+        where: {
+            skillStack: {
+                [sequelize.Op.like]: `%${keyword}%`
+            }
+        },
+        attributes: ['id', 'companyName', 'country', 'location', 'recruitPosition', 'signingBonus', 'skillStack']
+    });
+    // skillStack 데이터 result값에 저장
+    if (searchskillStack.length > 0) {
+        searchskillStack.forEach(res => {
+            if (isValid(res)) result.push(res.dataValues);
+        });
+    }
+
+    if (result.length > 0) {
+        try {
+            res.json(result);
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
+    else {
+        res.status(404).end();
+    }
+};
+
+module.exports = { show, detail, register, update, destroy, search };

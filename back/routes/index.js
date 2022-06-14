@@ -8,5 +8,6 @@ router.get('/recruits/:id', recruit.detail);
 router.post('/register', recruit.register);
 router.put('/recruits/:id', recruit.update);
 router.delete('/recruits/:id', recruit.destroy);
+router.get('/search', recruit.search);
 
 module.exports = router;
