@@ -60,17 +60,231 @@ http://localhost:3000
 ---
 
 # 2. DB 설계
-추후 추가 예정
+* REBMS: MySQL
+* DB_NAME: wanted_preonboarding
+* DB_TABLES:
+	1. recruits
+
+## tables
+#### recruits
+No | Column Name | Datatype | Key | Null | 비고
+-- | ----------- | -------- | --- | ---- | --- |
+1 | id | INT | PK | Not Null | Auto Increment
+2 | companyName | VARCHAR(15) |  | Not Null |  
+3 | country | VARCHAR(30) |  | Not Null |  
+4 | location | VARCHAR(30) |  | Not Null |
+5 | recruitPosition | VARCHAR(30) |  | Not Null |
+6 | signingBonus | INT |  | Not Null |
+7 | recruitDescribe | VARCHAR(300) |  | Not Null |
+8 | skillStack | VARCHAR(100) |  | Not Null | 
+9 | createAt | DATETIME |  | Not Null | 
+10 | updateAt | DATETIME |  | Not Null | 
 
 ---
 
 # 3. API 설계
-추후 추가 예정
+
+## 채용공고 등록
+* URL: /register
+* METHOD: POST
+* Request
+```
+{
+    "companyName" : "당근마켓",
+    "recruitPosition" : "검색팀 백엔드 인턴",
+    "country": "한국",
+    "location": "서울",
+    "signingBonus" : 1000000,
+    "recruitDescribe" : "당근마켓 검색팀에서 백엔드로 일할 인턴을 채용합니다 ...",
+    "skillStack" : "node.js Mysql"
+}
+```
+* Response
+	* status: 201
+```
+{
+    "id": 4,
+    "companyName": "당근마켓",
+    "recruitPosition": "검색팀 백엔드 인턴",
+    "country": "한국",
+    "location": "서울",
+    "signingBonus": 1000000,
+    "recruitDescribe": "당근마켓 검색팀에서 백엔드로 일할 인턴을 채용합니다 ...",
+    "skillStack": "node.js Mysql",
+    "updatedAt": "2022-06-14T14:03:59.325Z",
+    "createdAt": "2022-06-14T14:03:59.325Z"
+}
+```
+
+## 채용공고 수정
+* URL: /recruits/:id
+* METHOD: PUT
+* Request
+	* url: /recruits/4
+```
+{
+    "companyName" : "당근",
+    "country" : "대한민국"
+}
+```
+* Response
+	* status: 200
+```
+{
+    "id": 4,
+    "companyName": "당근",
+    "country": "대한민국",
+    "location": "서울",
+    "recruitPosition": "검색팀 백엔드 인턴",
+    "signingBonus": 1000000,
+    "recruitDescribe": "당근마켓 검색팀에서 백엔드로 일할 인턴을 채용합니다 ...",
+    "skillStack": "node.js Mysql",
+    "createdAt": "2022-06-14T14:03:59.000Z",
+    "updatedAt": "2022-06-14T14:04:17.859Z"
+}
+```
+
+## 채용공고 삭제
+* URL: /recruits/:id
+* METHOD: DELETE
+* Response
+	* status: 204
+
+## 채용공고 목록 조회
+* URL: /recruits
+* METHOD: GET
+* Request
+	* url: /recruits
+* Response
+	* status: 200
+```
+[
+    {
+        "id": 1,
+        "companyName": "라인",
+        "country": "한국",
+        "location": "판교",
+        "recruitPosition": "경력 백엔드",
+        "signingBonus": 500000,
+        "skillStack": "JAVA"
+    },
+    {
+        "id": 2,
+        "companyName": "당근마켓",
+        "country": "한국",
+        "location": "서울",
+        "recruitPosition": "신입 백엔드",
+        "signingBonus": 5000000,
+        "skillStack": "node.js"
+    },
+    {
+        "id": 3,
+        "companyName": "당근마켓",
+        "country": "한국",
+        "location": "서울",
+        "recruitPosition": "신입 프론트엔드",
+        "signingBonus": 5000000,
+        "skillStack": "react.js"
+    },
+    {
+        "id": 4,
+        "companyName": "당근마켓",
+        "country": "한국",
+        "location": "서울",
+        "recruitPosition": "node.js 개발자",
+        "signingBonus": 500000,
+        "skillStack": "node.js"
+    }
+]
+```
+
+## 채용공고 검색
+* URL: /search
+* METHOD: GET
+* Request
+	* url: /search?keyword=node.js
+* Response
+	* status: 200
+```
+[
+    {
+        "id": 4,
+        "companyName": "당근",
+        "country": "한국",
+        "location": "서울",
+        "recruitPosition": "node.js 개발자",
+        "signingBonus": 500000,
+        "skillStack": "node.js"
+    },
+    {
+        "id": 2,
+        "companyName": "당근마켓",
+        "country": "한국",
+        "location": "서울",
+        "recruitPosition": "신입 백엔드",
+        "signingBonus": 5000000,
+        "skillStack": "node.js"
+    }
+]
+```
+
+## 채용 상세페이지 조회
+* URL: /recruits/:id
+* METHOD: GET
+* Request
+	* url: /recruits/2
+* Response
+	* status: 200
+```
+{
+    "id": 2,
+    "companyName": "당근마켓",
+    "country": "한국",
+    "location": "서울",
+    "recruitPosition": "신입 백엔드",
+    "signingBonus": 5000000,
+    "skillStack": "node.js",
+    "recruitDescribe": "당근마켓 검색팀에서 인턴을 모집합니다 ...",
+    "otherRecruits": [
+        3,
+        4
+    ]
+}
+```
 
 ---
 
 # 4. Test code 설계
-추후 추가 예정
+> API별 기능 테스트 실시
+
+## 채용공고 등록 테스트
+* 성공 시
+	* 생성된 객체의 id 반환
+	* 입력한 companyName 반환
+* 실패 시
+	* compnanyName 파라미터 누락 시 400 반환
+
+## 채용공고 수정 테스트
+* 성공 시
+	* 변경된 companyName을 응답
+	* 변경된 recruitPosition을 응답
+	* 변경된 signingBonus을 응답
+	* 변경된 recruitDescribe을 응답
+	* 변경된skillStack을 응답
+
+## 채용공고 삭제 테스트
+* 성공 시
+	* 204 응답
+
+## 채용공고 목록 조회 테스트
+* 성공 시
+	* 채용 공고 객체를 담은 배열 응답
+
+## 채용공고 상세 페이지 조회 테스트
+* 성공 시
+	* id와 일치한 채용 상세페이지를 반환
+* 실패 시
+	* id로 객체를 찾을 수 없는 경우 404 응답
 
 ---
 
