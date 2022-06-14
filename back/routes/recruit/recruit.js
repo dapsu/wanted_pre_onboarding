@@ -13,18 +13,38 @@ const show = (req, res) => {
 };
 
 // 채용 상세 페이지 가져오기
-const detail = (req, res) => {
-    const id = parseInt(req.params.id, 10);
+const detail = async (req, res) => {
+    const id = parseInt(req.params.id, 10);     // id 파라미터 값
+    const detailResult = await models.Recruit.findOne({     // 찾을 상세페이지 데이터
+        where: { id },
+        attributes: ['id', 'companyName', 'country', 'location', 'recruitPosition', 'signingBonus', 'skillStack', 'recruitDescribe']
+    });
 
-    models.Recruit
-        .findOne({
-            where: { id },
-            attributes: ['id', 'companyName', 'country', 'location', 'recruitPosition', 'signingBonus', 'skillStack', 'recruitDescribe']
-        })
-        .then(recruit => {
-            if (!recruit) return res.status(404).end();     // 객체를 찾을 수 없는 경우 404 상태 코드 반환
-            res.json(recruit);
+    // id로 객체를 찾을 수 없는 경우 404 상태 코드를 반환
+    if (detailResult === null) return res.status(404).end();
+
+    const result = detailResult.dataValues;     // 응답할 상세 페이지 객체
+    const companyName = detailResult.dataValues.companyName;
+
+    const otherRecruits = await models.Recruit.findAll({    // 같은 회사에서 올린 다른 채용공고 데이터
+        where: { companyName },
+        attributes: ['id']
+    });
+
+    const otherId = [];     // 다른 채용공고 id값 담을 배열
+    if (otherRecruits.length > 0) {
+        otherRecruits.forEach(recruit => {
+            if (id !== recruit.dataValues.id) otherId.push(recruit.dataValues.id);
         });
+    }
+    result['otherRecruits'] = otherId;      // 상세 페이지 객체에 다른 채용공고 속성 추가
+
+    try {
+        res.json(result);
+    }
+    catch (err) {
+        console.error(err);
+    }
 };
 
 // 채용공고 등록하기
@@ -96,9 +116,9 @@ const destroy = (req, res) => {
 
 // 채용공고 검색 기능
 const search = async (req, res) => {
-    const keyword = req.query.keyword;
-    const result = [];
-    const isValid = (res) => {
+    const keyword = req.query.keyword;      // 검색하고자 하는 키워드
+    const result = [];      // 검색요건 만족하는 객체 담는 배열
+    const isValid = (res) => {      // 추가하려는 객체가 result에 있는 객체와 중복되는지 체크
         for (const data of result) {
             if (data.id === res.dataValues.id) return false;
         }
