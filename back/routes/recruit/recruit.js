@@ -43,7 +43,7 @@ const detail = async (req, res) => {
         res.json(result);
     }
     catch (err) {
-        console.error(err).end();
+        console.error(err);
     }
 };
 
@@ -225,7 +225,7 @@ const search = async (req, res) => {
             res.json(result);
         }
         catch (err) {
-            console.error(err).end();
+            console.error(err);
         }
     }
     else {
