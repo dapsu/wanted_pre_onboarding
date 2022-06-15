@@ -64,6 +64,7 @@ http://localhost:3000
 * DB_NAME: wanted_preonboarding
 * DB_TABLES:
 	1. recruits
+	2. users
 
 ## tables
 #### recruits
@@ -79,6 +80,22 @@ No | Column Name | Datatype | Key | Null | 비고
 8 | skillStack | VARCHAR(100) |  | Not Null | 
 9 | createAt | DATETIME |  | Not Null | 
 10 | updateAt | DATETIME |  | Not Null | 
+
+#### users
+No | Column Name | Datatype | Key | Null | 비고
+-- | ----------- | -------- | --- | ---- | --- |
+1 | id | INT | PK | Not Null | Auto Increment
+2 | email | VARCHAR(45) |  | Not Null | Unique
+3 | userName | VARCHAR(15) |  | Not Null |  
+4 | password | VARCHAR(100) |  | Not Null |
+5 | createAt | DATETIME |  | Not Null | 
+6 | updateAt | DATETIME |  | Not Null | 
+7 | RecruitId | INT | FK | Not Null |
+
+## ERD
+![users-recruits](https://user-images.githubusercontent.com/80298502/173796311-64ea6e81-3cca-429e-b543-52ab70b67e90.JPG)
+
+* users 테이블의 외래키 RecruitId와 recruits 테이블의 id 연결을 통해 테이블 관계 형성(1:N)
 
 ---
 
